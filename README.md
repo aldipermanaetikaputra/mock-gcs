@@ -72,7 +72,7 @@ const [exists] = await file.exists();
 console.log(exists); // true
 
 const [url] = await file.getSignedUrl();
-console.log(url); // "https://storage.googleapis.com/my-bucket/my-file.txt"
+console.log(url); // "https://storage.googleapis.com/my-bucket/my-file.txt?X-Goog-Algorithm=MOCKED"
 
 await file.delete();
 ```
@@ -84,7 +84,11 @@ You also can simulate a custom error by using `mockErrorOnce()` method.
 const error = new Error('Failed to save');
 file.mockErrorOnce('save', error);
 
-await file.save('Will not be saved!'); // An error thrown
+try {
+  await file.save('Will not be saved!'); // An error thrown
+} catch (error) {
+  console.error(error.message); // Failed to save
+}
 console.log('exists:', await file.exists()); // exists: [false]
 
 await file.save('Will definitely be saved!'); // No error thrown
@@ -129,7 +133,7 @@ The method returns a promise that resolves to the `MockFile` object that was cre
 const file = await bucket.put('file.txt', 'Hello, world!');
 const [files] = await bucket.getFiles();
 
-console.log(files.map(file => file.name)); // ["file.txt"]
+console.log(files.map(file => file.name)); // [ 'file.txt' ]
 ```
 
 ### `file.mockErrorOnce(method: string, error: Error): void`
