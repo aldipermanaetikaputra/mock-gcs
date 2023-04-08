@@ -1,0 +1,4 @@
+node_modules
+lib
+.vscode
+jest.config.js

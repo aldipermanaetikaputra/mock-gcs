@@ -1,0 +1,7 @@
+node_modules/
+lib/
+tmp/
+yarn-error.log
+.DS_Store
+.env
+.vscode
