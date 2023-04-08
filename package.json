@@ -34,10 +34,10 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "@google-cloud/storage": "^6.9.5",
     "stream-buffers": "^3.0.2"
   },
   "devDependencies": {
+    "@google-cloud/storage": "^6.9.5",
     "@types/jest": "^29.5.0",
     "@types/minimist": "^1.2.2",
     "@types/stream-buffers": "^3.0.4",
