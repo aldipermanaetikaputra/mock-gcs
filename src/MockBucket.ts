@@ -1,4 +1,4 @@
-import { FileOptions, GetFilesOptions, UploadOptions } from '@google-cloud/storage';
+import { File, FileOptions, GetFilesOptions, UploadOptions } from '@google-cloud/storage';
 import { IFile, Metadata, MockFile } from './MockFile';
 import { IStorage } from './MockStorage';
 import fs from 'fs';
@@ -10,10 +10,6 @@ export interface IBucket {
   upload(pathString: string, options?: UploadOptions): Promise<[IFile, Metadata]>;
   file(name: string, options?: FileOptions): IFile;
   getFiles(query?: GetFilesOptions): Promise<[IFile[], any, any]>;
-}
-
-interface MockUploadOptions extends Omit<UploadOptions, 'destination'> {
-  destination?: string;
 }
 
 export default class MockBucket implements IBucket {
@@ -44,7 +40,12 @@ export default class MockBucket implements IBucket {
     return this.files[name];
   }
 
-  public async upload(filePath: string, options?: MockUploadOptions): Promise<[IFile, Metadata]> {
+  public async upload(filePath: string, options?: UploadOptions): Promise<[IFile, Metadata]> {
+    if (options?.destination instanceof File)
+      throw new Error(
+        'Type File for `options.destination` params is not supported, use string instead'
+      );
+
     const name = options?.destination || path.basename(filePath);
     const contents = fs.readFileSync(filePath);
     const metadata = options?.metadata;

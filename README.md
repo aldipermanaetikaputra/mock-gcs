@@ -119,7 +119,7 @@ const realConsumer = new StorageConsumer(new Storage()); // use real GCS SDK
 
 Here are additional methods that only mock objects have:
 
-- ### `bucket.put(name: string, contents?: string | Buffer, metadata?: Metadata): Promise<MockFile>`
+### `bucket.put(name: string, contents?: string | Buffer, metadata?: Metadata): Promise<MockFile>`
 
 It used to create or overwrite a file in the bucket with the given `name` and `contents`. If a `metadata` object is also provided, it will be set as the metadata for the file.
 
@@ -132,7 +132,7 @@ const [files] = await bucket.getFiles();
 console.log(files.map(file => file.name)); // ["file.txt"]
 ```
 
-- ### `mockErrorOnce(method: string, error: Error): void`
+### `file.mockErrorOnce(method: string, error: Error): void`
 
 It allows the user to simulate an error when invoking a specific method on the MockFile instance, and it will only throw an error once for that method.
 

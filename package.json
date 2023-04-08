@@ -8,7 +8,6 @@
     "cloud-storage",
     "storage",
     "sdk",
-    "gcp",
     "mock"
   ],
   "author": "Aldi Permana Etika Putra <aldipermanaetikaputra@gmail.com>",
