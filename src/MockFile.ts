@@ -86,8 +86,13 @@ export class MockFile implements IFile {
     if (!exists) this.bucket.files[this.name] = this;
   }
 
-  public mockReset<T extends keyof MockableFileQueues>(name?: T) {
-    if (name) this.mockQueues[name] = [];
+  /**
+   * Resets the mock queues for the specified method, or for all methods if no method is specified.
+   * @param method Optional. The method for which to reset the mock queue.
+   * @returns The current `MockFile` instance.
+   **/
+  public mockReset<T extends keyof MockableFileQueues>(method?: T) {
+    if (method) this.mockQueues[method] = [];
     else {
       this.mockQueues = {
         exists: [],

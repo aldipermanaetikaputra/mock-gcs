@@ -113,6 +113,8 @@ class StorageConsumer {
     const [exists] = await file.exists();
     return exists;
   }
+
+  // any other methods here...
 }
 
 const mockConsumer = new StorageConsumer(new MockStorage()); // use mocked version
@@ -147,6 +149,10 @@ The method is useful when you want to test how your code behaves when an error o
 It's worth noting that `mockErrorOnce()` only affects the next call to the specified method. If you want to simulate an error for multiple calls, you will need to call `mockErrorOnce()` again for each call. Also, if you want to simulate errors for multiple methods, you will need to call `mockErrorOnce()` separately for each method.
 
 Supported methods: `delete()`, `exists()`, `download()`, `save()`, `getSignedUrl()`, `setMetadata()`, `getMetadata()`.
+
+### `file.mockReset(method?: string): void`
+
+It used to resets the mock queues that allows you to reset the mock state of the instance. When called with no arguments, it resets all mock queues to empty arrays. However, if you pass in a specific method name as an argument, it will reset only that method's mock queue. This can be useful when used in conjunction with `mockErrorOnce()`, as it allows you to remove a previously set mock error for a specific method and restore its original behavior.
 
 ## Testing
 
