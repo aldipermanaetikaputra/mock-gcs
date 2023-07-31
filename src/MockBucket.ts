@@ -10,6 +10,7 @@ export interface IBucket {
   upload(pathString: string, options?: UploadOptions): Promise<[IFile, Metadata]>;
   file(name: string, options?: FileOptions): IFile;
   getFiles(query?: GetFilesOptions): Promise<[IFile[], any, any]>;
+  get cloudStorageURI(): URL;
 }
 
 export default class MockBucket implements IBucket {
@@ -69,5 +70,9 @@ export default class MockBucket implements IBucket {
       .map(([, file]) => file);
 
     return Promise.resolve([filtered, {}, {}]);
+  }
+
+  public get cloudStorageURI(): URL {
+    return new URL(`gs://${this.name}`);
   }
 }

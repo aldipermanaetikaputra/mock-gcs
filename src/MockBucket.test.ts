@@ -109,4 +109,11 @@ describe('MockBucket', () => {
       expect(files[1].name).toBe(file2.name);
     });
   });
+
+  describe('cloudStorageURI', () => {
+    it('should return a valid Cloud Storage URI', () => {
+      const uri = bucket.cloudStorageURI;
+      expect(uri.href).toBe('gs://test-bucket');
+    });
+  });
 });
