@@ -24,7 +24,8 @@
     "build": "tsc -p tsconfig.build.json",
     "test": "jest",
     "lint": "eslint . --ext .ts",
-    "version": "yarn build"
+    "version": "yarn build",
+    "prepare": "yarn build"
   },
   "repository": {
     "type": "git",
