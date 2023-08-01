@@ -1,4 +1,10 @@
-import { File, FileOptions, GetFilesOptions, UploadOptions } from '@google-cloud/storage';
+import {
+  DeleteFilesOptions,
+  File,
+  FileOptions,
+  GetFilesOptions,
+  UploadOptions,
+} from '@google-cloud/storage';
 import { IFile, Metadata, MockFile } from './MockFile';
 import { IStorage } from './MockStorage';
 import fs from 'fs';
@@ -70,6 +76,11 @@ export default class MockBucket implements IBucket {
       .map(([, file]) => file);
 
     return Promise.resolve([filtered, {}, {}]);
+  }
+
+  public async deleteFiles(query?: DeleteFilesOptions): Promise<void> {
+    const files = await this.getFiles(query);
+    await Promise.all(files[0].map(file => file.delete()));
   }
 
   public get cloudStorageURI(): URL {

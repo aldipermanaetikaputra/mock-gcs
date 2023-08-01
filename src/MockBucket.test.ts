@@ -110,6 +110,38 @@ describe('MockBucket', () => {
     });
   });
 
+  describe('deleteFiles', () => {
+    it('should delete files with prefix params', async () => {
+      const file1 = await bucket.put('test-1.txt');
+      const file2 = await bucket.put('test-2.txt');
+      const file3 = await bucket.put('nn-test-3.txt');
+
+      await bucket.deleteFiles({ prefix: 'test-' });
+      const [exists1] = await file1.exists();
+      const [exists2] = await file2.exists();
+      const [exists3] = await file3.exists();
+
+      expect(exists1).toBe(false);
+      expect(exists2).toBe(false);
+      expect(exists3).toBe(true);
+    });
+
+    it('should delete all files without prefix set', async () => {
+      const file1 = await bucket.put('test-1.txt');
+      const file2 = await bucket.put('test-2.txt');
+      const file3 = await bucket.put('nn-test-3.txt');
+
+      await bucket.deleteFiles({});
+      const [exists1] = await file1.exists();
+      const [exists2] = await file2.exists();
+      const [exists3] = await file3.exists();
+
+      expect(exists1).toBe(false);
+      expect(exists2).toBe(false);
+      expect(exists3).toBe(false);
+    });
+  });
+
   describe('cloudStorageURI', () => {
     it('should return a valid Cloud Storage URI', () => {
       const uri = bucket.cloudStorageURI;
