@@ -238,29 +238,22 @@ export class MockFile implements IFile {
       targetBucket = this.bucket;
       targetFileName = destination;
     } else if ('name' in destination && 'file' in destination) {
-      // Check for the presence of the 'file' method as an indication of a Bucket.
       targetBucket = destination;
       targetFileName = this.name;
     } else if ('name' in destination) {
-      // This checks for the File-like object.
       targetBucket = destination.bucket;
       targetFileName = destination.name;
     } else {
       throw new Error('Invalid destination type');
     }
+
     const [contents] = await this.download();
     const [metadata] = await this.getMetadata();
 
-    // Merge options.metadata with existing metadata
     const newMetadata = { ...metadata, ...options?.metadata };
-
-    // Create a new file in the target bucket and write contents and metadata
     const newFile = targetBucket.file(targetFileName);
-    // await newFile.save(contents);
-    // await newFile.setMetadata(newMetadata);
     await newFile.save(contents, { metadata: newMetadata });
 
-    // Return CopyResponse format
     return [newFile as any, newMetadata];
   }
 }

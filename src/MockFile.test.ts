@@ -15,6 +15,31 @@ describe('MockFile', () => {
     file = bucket.file('test-file.txt', undefined, true);
   });
 
+  describe('copy', () => {
+    it('should copy the file within the same bucket', async () => {
+      const contents = 'test file contents';
+      const metadata = { foo: 'bar' };
+
+      // Set file contents
+      file.contents = Buffer.from(contents);
+      // Set file metadata
+      await file.setMetadata(metadata);
+
+      // Copy the file
+      await file.copy('copied-file.txt');
+      const copiedFile = bucket.file('copied-file.txt');
+
+      // Get response
+      const response = await copiedFile.download();
+
+      // Check contents is the same
+      expect(response[0]).toEqual(Buffer.from(contents));
+      // Check metadata is the same
+      const [result] = await copiedFile.getMetadata();
+      expect(result.foo).toBe('bar');
+    });
+  });
+
   describe('constructor', () => {
     it('should create a new instance with the correct properties', () => {
       expect(file.bucket).toBe(bucket);
