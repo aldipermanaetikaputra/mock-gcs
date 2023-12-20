@@ -12,6 +12,7 @@ Available:
 - `bucket.getFiles()` (promise-based only)
 - `bucket.deleteFiles()` (promise-based only)
 - `bucket.cloudStorageURI`
+- `file.copy()` (promise-based only)
 - `file.delete()` (promise-based only)
 - `file.exists()` (promise-based only)
 - `file.download()` (promise-based only)

@@ -7,6 +7,8 @@ import {
   GetSignedUrlConfig,
   GetSignedUrlResponse,
   SaveOptions,
+  CopyOptions,
+  CopyResponse,
 } from '@google-cloud/storage';
 import MockBucket, { IBucket } from './MockBucket';
 import { writeFileSync } from 'fs';
@@ -217,6 +219,42 @@ export class MockFile implements IFile {
 
     if (options?.metadata) this.metadata = options.metadata;
     this.contents = Buffer.isBuffer(data) ? data : Buffer.from(data);
+  }
+
+  /**
+   * Copies the current file to the specified destination.
+   * @param destination The destination can be a string (file name), Bucket, or File object.
+   * @param options Optional CopyOptions.
+   * @returns A promise that resolves to the CopyResponse.
+   */
+  public async copy(
+    destination: string | MockBucket | MockFile,
+    options?: CopyOptions
+  ): Promise<CopyResponse> {
+    let targetBucket: MockBucket;
+    let targetFileName: string;
+
+    if (typeof destination === 'string') {
+      targetBucket = this.bucket;
+      targetFileName = destination;
+    } else if ('name' in destination && 'file' in destination) {
+      targetBucket = destination;
+      targetFileName = this.name;
+    } else if ('name' in destination) {
+      targetBucket = destination.bucket;
+      targetFileName = destination.name;
+    } else {
+      throw new Error('Invalid destination type');
+    }
+
+    const [contents] = await this.download();
+    const [metadata] = await this.getMetadata();
+
+    const newMetadata = { ...metadata, ...options?.metadata };
+    const newFile = targetBucket.file(targetFileName);
+    await newFile.save(contents, { metadata: newMetadata });
+
+    return [newFile as any, newMetadata];
   }
 }
 
