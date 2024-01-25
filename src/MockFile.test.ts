@@ -192,4 +192,11 @@ describe('MockFile', () => {
       });
     });
   });
+
+  describe('cloudStorageURI', () => {
+    it('should return a valid Cloud Storage URI', () => {
+      const uri = file.cloudStorageURI;
+      expect(uri.href).toBe('gs://test-bucket/test-file.txt');
+    });
+  });
 });
