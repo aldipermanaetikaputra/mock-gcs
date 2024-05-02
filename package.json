@@ -1,6 +1,6 @@
 {
   "name": "mock-gcs",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Mock implementation of the Google Cloud Storage SDK.",
   "url": "https://github.com/aldipermanaetikaputra/mock-gcs",
   "keywords": [
