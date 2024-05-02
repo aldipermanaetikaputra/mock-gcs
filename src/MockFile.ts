@@ -259,6 +259,10 @@ export class MockFile implements IFile {
 
     return [newFile as any, newMetadata];
   }
+
+  public get cloudStorageURI(): URL {
+    return new URL(`gs://${this.bucket.name}/${this.name}`);
+  }
 }
 
 export default MockFile;
