@@ -19,7 +19,7 @@ import {
   GetMetadataOptions,
   SetMetadataOptions,
   SetMetadataResponse,
-} from '@google-cloud/storage/build/src/nodejs-common/service-object';
+} from '@google-cloud/storage/build/cjs/src/nodejs-common/service-object';
 import { ReadableStreamBuffer, WritableStreamBuffer } from 'stream-buffers';
 import { IStorage } from './MockStorage';
 
@@ -31,7 +31,10 @@ export interface IMockableFile {
   download(options?: DownloadOptions): Promise<DownloadResponse>;
   getSignedUrl(cfg: GetSignedUrlConfig): Promise<GetSignedUrlResponse>;
   save(data: string | Buffer, options?: SaveOptions): Promise<void>;
-  setMetadata(metadata: Metadata, options?: SetMetadataOptions): Promise<SetMetadataResponse>;
+  setMetadata(
+    metadata: Metadata,
+    options?: SetMetadataOptions
+  ): Promise<SetMetadataResponse<Metadata>>;
   getMetadata(options?: GetMetadataOptions): Promise<[Metadata, any]>;
 }
 
@@ -147,7 +150,7 @@ export class MockFile implements IFile {
     return [!!this.bucket.files[this.name]];
   }
 
-  public async setMetadata(metadata: Metadata): Promise<SetMetadataResponse> {
+  public async setMetadata(metadata: Metadata): Promise<SetMetadataResponse<Metadata>> {
     const mockValue = this.mockQueues.setMetadata.shift();
     if (mockValue && mockValue.type === 'error') throw mockValue.error;
 
